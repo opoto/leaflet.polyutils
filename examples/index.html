@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>leaflet.polyutils example</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
+
+    <script src="../src/leaflet.polyprune.js"></script>
+    <script src="../src/leaflet.polytrim.js"></script>
+    <script src="../src/leaflet.polystats.js"></script>
+
+    <style media="screen">
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body>div {
+            margin: 10px;
+        }
+
+        #map {
+            height: 70%;
+            width: 100%;
+            margin: 0;
+        }
+
+        #message {
+            min-height: 4em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <button id="prune">Prune</button>
+        <button id="trim1">Trim 3 points from start</button>
+        <button id="trim2">Trim 1 point from end</button>
+        <button id="stats">Stats</button>
+    </div>
+    <div id="message"></div>
+
+    <div id="map"></div>
+
+    <script type="text/javascript">
+        var startPoint = [46.11606, 6.83397];
+        var map = L.map('map').setView(startPoint, 16),
+            tilelayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: 'Map Data \u00a9 <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+        function showStats() {
+            function time2txt(time) {
+                var strTime = "";
+                if (time >= 3600) strTime += Math.floor(time / 3600) + "h";
+                time %= 3600;
+                if (time >= 60) strTime += Math.floor(time / 60) + "m";
+                time %= 60;
+                strTime += Math.round(time) + "s";
+                return strTime
+            }
+
+            var pts = polyline.getLatLngs();
+            if (pts && pts.length > 0) {
+                var last = pts[pts.length - 1];
+                var first = pts[0];
+                var statstxt = 'Polyline is ' + Math.round(last.dist) +
+                    'm long.<br>'
+                statstxt += 'Min alt is ' + polyline.stats.minalt +
+                    'm, max is ' + polyline.stats.maxalt + 'm.<br>'
+                statstxt += 'You\'ll climb ' + polyline.stats.climbing +
+                    'm, and descend ' + polyline.stats.descent + 'm.<br>';
+                statstxt += 'Consequently it will take approx. ' + time2txt(last.chrono) +
+                    ' by feet (' + time2txt(first.chrono_rt) + ' if round-trip)<br>';
+                L.DomUtil.get('message').innerHTML = statstxt;
+            } else {
+                L.DomUtil.get('message').innerHTML = 'Empty polyline';
+            }
+        }
+
+        var polyline = L.polyline([
+            [46.11874, 6.82929, 2013],
+            [46.1186, 6.82944, 2013],
+            [46.11845, 6.82978, 2011],
+            [46.11824, 6.83002, 2010],
+            [46.11804, 6.83019, 2009],
+            [46.11763, 6.83051, 2006],
+            [46.11745, 6.83072, 2003],
+            [46.11731, 6.83096, 1999],
+            [46.11723, 6.83115, 1995],
+            [46.11691, 6.83152, 1990],
+            [46.11662, 6.83183, 1986],
+            [46.11618, 6.83226, 1981],
+            [46.11594, 6.83269, 1976],
+            [46.11569, 6.83291, 1975],
+            [46.1156, 6.83293, 1977],
+            [46.11552, 6.83305, 1976],
+            [46.11534, 6.83316, 1977],
+            [46.11519, 6.83334, 1976],
+            [46.11501, 6.83361, 1973],
+            [46.11478, 6.83385, 1974],
+            [46.11451, 6.83408, 1974],
+            [46.11482, 6.83398, 1971],
+            [46.11495, 6.83389, 1970],
+            [46.11504, 6.83393, 1968],
+            [46.11513, 6.83382, 1968],
+            [46.11555, 6.83399, 1965],
+            [46.11584, 6.83399, 1965],
+            [46.11606, 6.83397, 1967],
+            [46.11662, 6.83426, 1971],
+            [46.11693, 6.8344, 1976],
+            [46.11708, 6.83444, 1978],
+            [46.11719, 6.83477, 1984],
+            [46.11727, 6.83481, 1987],
+            [46.11727, 6.83503, 1993],
+            [46.11757, 6.8351, 2004],
+            [46.11756, 6.83538, 2012],
+            [46.11761, 6.83565, 2022],
+            [46.11758, 6.836, 2035],
+            [46.1175, 6.83612, 2037],
+            [46.11735, 6.83603, 2030],
+            [46.11734, 6.83625, 2039],
+            [46.11735, 6.83638, 2044],
+            [46.1173, 6.83654, 2049],
+            [46.11744, 6.83664, 2056],
+            [46.11725, 6.83719, 2071],
+        ]).addTo(map);
+        var polystats = L.Util.polyStats(polyline, {
+            // compute timings based on speed profile
+            chrono: true,
+            // typical walking speed profile
+            speedProfile: [
+                [-35, 0.4722],
+                [-25, 0.555],
+                [-20, 0.6944],
+                [-14, 0.8333],
+                [-12, 0.9722],
+                [-10, 1.1111],
+                [-8, 1.1944],
+                [-6, 1.25],
+                [-5, 1.2638],
+                [-3, 1.25],
+                [2, 1.1111],
+                [6, 0.9722],
+                [10, 0.8333],
+                [15, 0.6944],
+                [19, 0.5555],
+                [26, 0.4166],
+                [38, 0.2777]
+            ],
+            onUpdate: showStats,
+        });
+
+        L.DomEvent.on(L.DomUtil.get('prune'), 'click', function(event) {
+            var pts = polyline.getLatLngs();
+            var pruned = L.PolyUtil.prune(pts, 5);
+            L.DomUtil.get('message').innerHTML = 'Pruned ' + (pts.length - pruned.length) +
+                ' points out of ' + pts.length;
+            polyline.setLatLngs(pruned);
+        });
+        L.DomEvent.on(L.DomUtil.get('trim1'), 'click', function(event) {
+            var polytrim = L.Util.polyTrim(polyline, L.Util.PolyTrim.FROM_START);
+            var trimmed = polytrim.trim(3);
+            L.DomUtil.get('message').innerHTML = 'Trimmed ' + trimmed + ' from start.';
+        });
+        L.DomEvent.on(L.DomUtil.get('trim2'), 'click', function(event) {
+            var polytrim = L.Util.polyTrim(polyline, L.Util.PolyTrim.FROM_END);
+            var trimmed = polytrim.trim(1);
+            L.DomUtil.get('message').innerHTML = 'Trimmed ' + trimmed + ' from end.';
+        });
+        L.DomEvent.on(L.DomUtil.get('stats'), 'click', function(event) {
+            polystats.updateStatsFrom(0);
+        });
+    </script>
+
+</body>
+
+</html>
