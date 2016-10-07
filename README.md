@@ -75,4 +75,4 @@ var txt = 'polyline length is ' + laspt.dist + 'm' +
 
 ## Live demo
 
-http://opoto.github.io/leaflet.polyutils/example
+https://opoto.github.io/leaflet.polyutils/examples
