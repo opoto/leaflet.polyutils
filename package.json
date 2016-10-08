@@ -1,0 +1,36 @@
+{
+  "name": "leaflet-polyutils",
+  "version": "0.1.0",
+  "description": "Utilities for Leaflet Polylines",
+  "keywords": [
+    "Leaflet",
+    "GIS"
+  ],
+  "main": "src/leaflet.polyutils.js",
+  "bugs": {
+    "url": "https://github.com/opoto/leaflet.polyutils/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/opoto/leaflet.polyutils.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha-phantomjs test/index.html"
+  },
+  "peerDependencies": {
+  },
+  "devDependencies": {
+    "leaflet": "^1.0.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0",
+    "happen": "^0.3.1",
+    "live-server": "^1.1.0",
+    "mocha": "^3.0.2",
+    "mocha-phantomjs": "^4.1.0",
+    "requirejs": "^2.2.0",
+    "sinon": "^1.17.5"
+  }
+}

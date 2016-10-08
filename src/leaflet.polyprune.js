@@ -111,6 +111,8 @@
             pruned.push(latlngs[latlngs.length - 1])
 
             return pruned;
+        } else {
+            return latlngs;
         }
 
     }

@@ -36,7 +36,7 @@
         options: {
             chrono: true,
             speedProfile: [],
-            onUpdate: undefined,
+            onUpdate: undefined
         },
 
         initialize: function(polyline, options) {
@@ -45,7 +45,7 @@
             this._speedProfile = options.speedProfile;
         },
 
-        setSpeedProfile(speedProfile) {
+        setSpeedProfile: function(speedProfile) {
 
             function isSameSpeedProfile(sp1, sp2) {
                 // Deep array equality test.
@@ -191,7 +191,7 @@
                 }
             }
             if (this.options.onUpdate) this.options.onUpdate();
-        },
+        }
 
     });
 
