@@ -1,3 +1,5 @@
+
+[![Build Status](https://travis-ci.org/opoto/leaflet.polyutils.svg?branch=master)](https://travis-ci.org/opoto/leaflet.polyutils)
 # leaflet.polyutils
 A set of utilities for Leaflet polylines. Each can be used independently.
 
