@@ -1,6 +1,6 @@
 {
   "name": "leaflet-polyutils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utilities for Leaflet Polylines",
   "keywords": [
     "Leaflet",
@@ -18,8 +18,7 @@
   "scripts": {
     "test": "mocha-phantomjs test/index.html"
   },
-  "peerDependencies": {
-  },
+  "peerDependencies": {},
   "devDependencies": {
     "leaflet": "^1.0.0",
     "chai": "^3.5.0",
