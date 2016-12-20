@@ -102,9 +102,10 @@ describe('L.PolyStats', function() {
 
     it('should work on empty polyline', function(done) {
         var polystats = L.Util.polyStats(PL0, {
-            speedProfile: [
-                [0, 1]
-            ]
+            speedProfile: {
+                method: L.Util.PolyStats.REFSPEEDS,
+                parameters: [0, 1]
+            },
         });
         polystats.updateStatsFrom(0);
         assert.isTrue(typeof PL0.stats !== 'undefined');
@@ -117,9 +118,10 @@ describe('L.PolyStats', function() {
         var last = pts[pts.length - 1];
         var callback = sinon.spy();
         var polystats = L.Util.polyStats(PL5, {
-            speedProfile: [
-                [0, 1]
-            ],
+            speedProfile: {
+                method: L.Util.PolyStats.REFSPEEDS,
+                parameters: [0, 1]
+            },
             onUpdate: callback
         });
         polystats.updateStatsFrom(0);

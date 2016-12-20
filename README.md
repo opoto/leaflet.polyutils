@@ -14,10 +14,10 @@ L.PolyUtil.prune(polyline.getLatLngs(), 5);
 ## L.Util.PolyTrim
 A utility class to delete heading or trailing points from a polyline.
 
-### Constants
+### PolyTrim Constants
 * `L.Util.PolyTrim.FROM_START`: Direction constant.
 * `L.Util.PolyTrim.FROM_END`: Direction constant.
-### Methods
+### PolyTrim Methods
 * `L.Util.polyTrim (polyline, direction)`: Creates a new L.Util.PolyTrim instance.
 * `trim(n)`: Trims the polyline, and returns the number of removed points (may be smaller than `n` is polyline size was smaller than `n`).
 * `getDirection()`: Returns the confirgured direction (`L.Util.PolyTrim.FROM_START` or `L.Util.PolyTrim.FROM_END`).
@@ -44,29 +44,66 @@ A utility class to compute statistics for a polyline:
   * `climbing`: Cumulated positive elevation difference between each consecutive polyline points.
   * `descent`: Cumulated negative elevation difference between each consecutive polyline points.
 
-The `chrono` properties are computed based on a speed profile defined by an array of value pairs, where the first value is the slope, and the second is the speed for that slope. Slope between two points is computed by dividing their elevation difference by the distance separating them. Speed is in meters per second.
+### Speed profiles
+A speed profile is a parametrized function:
+```
+speed = f(slope)
+```
+Slope between two points is computed by dividing their elevation difference by the distance separating them. Speed is in meters per second.
+
+Several functions are supported, which use different types of parameters:
+
+| Function method            | Parameters | Description |
+| -------------------------- | -----------| ----------- |
+| `L.Util.PolyStats.REFSPEEDS` | Array of [slope, speed] pairs, sorted by increasing slope| The speed is computed by taking the proportional speed between the 2 closest slopes |
+| `L.Util.PolyStats.LINEAR` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope + b` |
+| `L.Util.PolyStats.POWER` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope^b` |
+| `L.Util.PolyStats.POLYNOMIAL` | Array of numbers [p0, p1, ..., pn] | The speed is computed with formula: `speed = p0 + p1*slope^1 + ... + pn*slope^n`|
 
 
-### Constructor Options
+#### Encoding:
+A speed profile is encoded as a json value with two fields:
+* `method` is the function method, as listed above
+* `parameters` is the parameters value as defined above
+
+#### Examples:
+```
+var sp1 = {
+  method : L.Util.PolyStats.REFSPEEDS,
+  parameters : [ [-5, 1.2638], [3, 1.25], [2, 1.1111], [6, 0.9722] ]
+};
+var sp2 = {
+  method : L.Util.PolyStats.POLYNOMIAL,
+  parameters : [ 1.1, -0.1, -0.001 ]
+};
+```
+
+### PolyStats Constructor Options
 * `chrono`: (default: `true`) If false then computation of `chrono` properties is skipped, gaining some computation time.
-* `speedProfile`: (default: `[]`) The speed profile as defined above.
+* `speedProfile`: (default is `{ method: L.Util.PolyStats.REFSPEEDS, parameters: [0, 1.25] }`) The speed profile as defined above.
 * `onUpdate`: (default: `undefined`) If set, this method will be called (without any parameter) at the end of each statistics computation.
+* `minspeed`: (default: `0.05`) Computed speeds below this value will be floored to this value
 
-### Methods
+### PolyStats Methods
 * `L.Util.polyStats(polyline, options)`: Creates a new L.Util.PolyStats instance.
 * `setSpeedProfile(speedprofile)`: Sets a new speed profile. This triggers an update of the statistics if options.chrono is true.
 * `updateStatsFrom(i)`: Updates the statistics because point index `i` was changed.
+* `computeSpeedProfileFromTrack(geojson, method, iterations, pruning, polydeg, threshold)`: Computes a speedprofile based on a recorded GPS trace. parameters are:
+  * `geojson:`: mandatory trace in geojson format.
+  * `method`: the speed profile function method to use.
+  * `iterations`: 1 for no pruning (recommended), 2 or more to iterate and exclude trace points which are more than `pruning`% different from the computed value.
+  * `pruning`: the percentage (number between 0 and 1) parameter for above described pruning
+  * `polydeg`: the polynomial degree to use, if POLYNOMIAL method is used (recommended value is 2)
+  * `threshold`: ignore speed from the GPS input traces which are below this value.
+* `computeSpeedProfileFromSpeeds(refspeeds, method, iterations, pruning, polydeg, threshold)`: Same as above method, but taking as input an array of [slope,speed] pairs instead of a geojson trace.
 
 Example:
 ```javascript
-var polystats = L.Util.polyStats(polyline,{
-        speedProfile: [
-            [-35, 0.4722], [-25, 0.555], [-20, 0.6944], [14, 0.8333],
-            [-12, 0.9722], [-10, 1.1111], [-8, 1.1944], [-6, 1.25],
-            [-5, 1.2638], [3, 1.25], [2, 1.1111], [6, 0.9722],
-            [10, 0.8333], [15, 0.6944], [19, 0.5555], [26, 0.4166],
-            [38, 0.2777]
-        ]
+var polystats = L.Util.polyStats(polyline, {
+        speedProfile: {
+          method : L.Util.PolyStats.REFSPEEDS,
+          parameters : [ [-5, 1.2638], [3, 1.25], [2, 1.1111], [6, 0.9722] ]
+        }
       })
 polytrim.updateStatsFrom(0);
 var pts = polyline.getLatLngs();
