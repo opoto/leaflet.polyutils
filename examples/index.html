@@ -136,12 +136,12 @@
             [46.11744, 6.83664, 2056],
             [46.11725, 6.83719, 2071],
         ]).addTo(map);
-        var polystats = L.Util.polyStats(polyline, {
+        var polystats = L.polyStats(polyline, {
             // compute timings based on speed profile
             chrono: true,
             // example walking speed profile
             speedProfile: {
-                method: L.Util.PolyStats.POLYNOMIAL,
+                method: L.PolyStats.POLYNOMIAL,
                 parameters: [1, -0.001684, -0.000151 ]
             },
             onUpdate: showStats,
@@ -155,12 +155,12 @@
             polyline.setLatLngs(pruned);
         });
         L.DomEvent.on(L.DomUtil.get('trim1'), 'click', function(event) {
-            var polytrim = L.Util.polyTrim(polyline, L.Util.PolyTrim.FROM_START);
+            var polytrim = L.polyTrim(polyline, L.PolyTrim.FROM_START);
             var trimmed = polytrim.trim(3);
             L.DomUtil.get('message').innerHTML = 'Trimmed ' + trimmed + ' from start.';
         });
         L.DomEvent.on(L.DomUtil.get('trim2'), 'click', function(event) {
-            var polytrim = L.Util.polyTrim(polyline, L.Util.PolyTrim.FROM_END);
+            var polytrim = L.polyTrim(polyline, L.PolyTrim.FROM_END);
             var trimmed = polytrim.trim(1);
             L.DomUtil.get('message').innerHTML = 'Trimmed ' + trimmed + ' from end.';
         });

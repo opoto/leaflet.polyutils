@@ -11,27 +11,27 @@ Example:
 L.PolyUtil.prune(polyline.getLatLngs(), 5);
 ```
 
-## L.Util.PolyTrim
+## L.PolyTrim
 A utility class to delete heading or trailing points from a polyline.
 
 ### PolyTrim Constants
-* `L.Util.PolyTrim.FROM_START`: Direction constant.
-* `L.Util.PolyTrim.FROM_END`: Direction constant.
+* `L.PolyTrim.FROM_START`: Direction constant.
+* `L.PolyTrim.FROM_END`: Direction constant.
 ### PolyTrim Methods
-* `L.Util.polyTrim (polyline, direction)`: Creates a new L.Util.PolyTrim instance.
+* `L.polyTrim (polyline, direction)`: Creates a new L.PolyTrim instance.
 * `trim(n)`: Trims the polyline, and returns the number of removed points (may be smaller than `n` is polyline size was smaller than `n`).
-* `getDirection()`: Returns the confirgured direction (`L.Util.PolyTrim.FROM_START` or `L.Util.PolyTrim.FROM_END`).
+* `getDirection()`: Returns the confirgured direction (`L.PolyTrim.FROM_START` or `L.PolyTrim.FROM_END`).
 * `getPolySize()`: Returns the polyline size before trimming.
 
 Example:
 ```javascript
-var polytrim = L.Util.polyTrim(polyline, L.Util.PolyTrim.FROM_END);
+var polytrim = L.polyTrim(polyline, L.PolyTrim.FROM_END);
 var trimmed = polytrim.trim(10); // delete the 10 last points of the polyline
 trimmed += polytrim.trim(5); // delete 5 more points
 // trimmed is 15 if polyline had at least 15 points
 ```
 
-## L.Util.PolyStats
+## L.PolyStats
 A utility class to compute statistics for a polyline:
 * To each LatLng point of the polyline are added the following properties:
   * `i`: Index of this point in the polyline.
@@ -55,10 +55,10 @@ Several functions are supported, which use different types of parameters:
 
 | Function method            | Parameters | Description |
 | -------------------------- | -----------| ----------- |
-| `L.Util.PolyStats.REFSPEEDS` | Array of [slope, speed] pairs, sorted by increasing slope| The speed is computed by taking the proportional speed between the 2 closest slopes |
-| `L.Util.PolyStats.LINEAR` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope + b` |
-| `L.Util.PolyStats.POWER` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope^b` |
-| `L.Util.PolyStats.POLYNOMIAL` | Array of numbers [p0, p1, ..., pn] | The speed is computed with formula: `speed = p0 + p1*slope^1 + ... + pn*slope^n`|
+| `L.PolyStats.REFSPEEDS` | Array of [slope, speed] pairs, sorted by increasing slope| The speed is computed by taking the proportional speed between the 2 closest slopes |
+| `L.PolyStats.LINEAR` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope + b` |
+| `L.PolyStats.POWER` | Array of 2 numbers [a, b] | The speed is computed with formula: `speed = a*slope^b` |
+| `L.PolyStats.POLYNOMIAL` | Array of numbers [p0, p1, ..., pn] | The speed is computed with formula: `speed = p0 + p1*slope^1 + ... + pn*slope^n`|
 
 
 #### Encoding:
@@ -69,23 +69,23 @@ A speed profile is encoded as a json value with two fields:
 #### Examples:
 ```
 var sp1 = {
-  method : L.Util.PolyStats.REFSPEEDS,
+  method : L.PolyStats.REFSPEEDS,
   parameters : [ [-5, 1.2638], [3, 1.25], [2, 1.1111], [6, 0.9722] ]
 };
 var sp2 = {
-  method : L.Util.PolyStats.POLYNOMIAL,
+  method : L.PolyStats.POLYNOMIAL,
   parameters : [ 1.1, -0.1, -0.001 ]
 };
 ```
 
 ### PolyStats Constructor Options
 * `chrono`: (default: `true`) If false then computation of `chrono` properties is skipped, gaining some computation time.
-* `speedProfile`: (default is `{ method: L.Util.PolyStats.REFSPEEDS, parameters: [0, 1.25] }`) The speed profile as defined above.
+* `speedProfile`: (default is `{ method: L.PolyStats.REFSPEEDS, parameters: [0, 1.25] }`) The speed profile as defined above.
 * `onUpdate`: (default: `undefined`) If set, this method will be called (without any parameter) at the end of each statistics computation.
 * `minspeed`: (default: `0.05`) Computed speeds below this value will be floored to this value
 
 ### PolyStats Methods
-* `L.Util.polyStats(polyline, options)`: Creates a new L.Util.PolyStats instance.
+* `L.polyStats(polyline, options)`: Creates a new L.PolyStats instance.
 * `setSpeedProfile(speedprofile)`: Sets a new speed profile. This triggers an update of the statistics if options.chrono is true.
 * `updateStatsFrom(i)`: Updates the statistics because point index `i` was changed.
 * `computeSpeedProfileFromTrack(geojson, method, iterations, pruning, polydeg, threshold)`: Computes a speedprofile based on a recorded GPS trace. parameters are:
@@ -99,9 +99,9 @@ var sp2 = {
 
 Example:
 ```javascript
-var polystats = L.Util.polyStats(polyline, {
+var polystats = L.polyStats(polyline, {
         speedProfile: {
-          method : L.Util.PolyStats.REFSPEEDS,
+          method : L.PolyStats.REFSPEEDS,
           parameters : [ [-5, 1.2638], [3, 1.25], [2, 1.1111], [6, 0.9722] ]
         }
       })

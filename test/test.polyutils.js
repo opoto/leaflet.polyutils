@@ -56,41 +56,41 @@ describe('L.PolyUtil.prune', function() {
 describe('L.PolyTrim', function() {
 
     it('should be idempotent on empty polyline', function(done) {
-        var polytrim = L.Util.polyTrim(PL0, L.Util.PolyTrim.FROM_END);
+        var polytrim = L.polyTrim(PL0, L.PolyTrim.FROM_END);
         polytrim.trim(1);
         assert.isTrue(PL0.getLatLngs().length === 0);
-        polytrim = L.Util.polyTrim(PL0, L.Util.PolyTrim.FROM_START);
+        polytrim = L.polyTrim(PL0, L.PolyTrim.FROM_START);
         polytrim.trim(1);
         assert.isTrue(PL0.getLatLngs().length === 0);
         done();
     });
 
     it('should be idempotent when parameter is 0', function(done) {
-        var polytrim = L.Util.polyTrim(PL3, L.Util.PolyTrim.FROM_END);
+        var polytrim = L.polyTrim(PL3, L.PolyTrim.FROM_END);
         polytrim.trim(0);
         assert.isTrue(PL3.getLatLngs().length === 3);
-        polytrim = L.Util.polyTrim(PL3, L.Util.PolyTrim.FROM_START);
+        polytrim = L.polyTrim(PL3, L.PolyTrim.FROM_START);
         polytrim.trim(0);
         assert.isTrue(PL3.getLatLngs().length === 3);
         done();
     });
 
     it('should trim', function(done) {
-        var polytrim = L.Util.polyTrim(PL3, L.Util.PolyTrim.FROM_END);
+        var polytrim = L.polyTrim(PL3, L.PolyTrim.FROM_END);
         polytrim.trim(1);
         assert.isTrue(PL3.getLatLngs().length === 2);
-        polytrim = L.Util.polyTrim(PL3, L.Util.PolyTrim.FROM_START);
+        polytrim = L.polyTrim(PL3, L.PolyTrim.FROM_START);
         polytrim.trim(1);
         assert.isTrue(PL3.getLatLngs().length === 1);
         done();
     });
 
     it('should wait for last trim to commit', function(done) {
-        var polytrim = L.Util.polyTrim(PL4, L.Util.PolyTrim.FROM_END);
+        var polytrim = L.polyTrim(PL4, L.PolyTrim.FROM_END);
         polytrim.trim(3);
         polytrim.trim(1);
         assert.isTrue(PL4.getLatLngs().length === 3);
-        polytrim = L.Util.polyTrim(PL4, L.Util.PolyTrim.FROM_START);
+        polytrim = L.polyTrim(PL4, L.PolyTrim.FROM_START);
         polytrim.trim(2);
         polytrim.trim(1);
         assert.isTrue(PL4.getLatLngs().length === 2);
@@ -101,9 +101,9 @@ describe('L.PolyTrim', function() {
 describe('L.PolyStats', function() {
 
     it('should work on empty polyline', function(done) {
-        var polystats = L.Util.polyStats(PL0, {
+        var polystats = L.polyStats(PL0, {
             speedProfile: {
-                method: L.Util.PolyStats.REFSPEEDS,
+                method: L.PolyStats.REFSPEEDS,
                 parameters: [0, 1]
             },
         });
@@ -117,9 +117,9 @@ describe('L.PolyStats', function() {
         var first = pts[0];
         var last = pts[pts.length - 1];
         var callback = sinon.spy();
-        var polystats = L.Util.polyStats(PL5, {
+        var polystats = L.polyStats(PL5, {
             speedProfile: {
-                method: L.Util.PolyStats.REFSPEEDS,
+                method: L.PolyStats.REFSPEEDS,
                 parameters: [0, 1]
             },
             onUpdate: callback
