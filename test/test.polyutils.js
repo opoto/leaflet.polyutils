@@ -26,7 +26,7 @@ var PL5 = L.polyline([
     [46.11804, 6.83019, 2030]
 ]);
 
-describe('L.PolyUtil.prune', function() {
+describe('L.PolyPrune.prune', function() {
 
     it('should not prune when size is < 3', function(done) {
         var pts;
@@ -35,19 +35,19 @@ describe('L.PolyUtil.prune', function() {
         var pls;
         for (i = 0, pls = [PL0, PL1, PL2]; i < pls.length; i++) {
             pts = pls[i].getLatLngs();
-            pruned = L.PolyUtil.prune(pts, 1000);
+            pruned = L.PolyPrune.prune(pts, 1000);
             assert.isTrue(pruned.length === pts.length);
         }
         done();
     });
 
     it('should prune when within distance', function(done) {
-        assert.isTrue(L.PolyUtil.prune(PL3.getLatLngs(), 10).length === PL3.getLatLngs().length - 1);
+        assert.isTrue(L.PolyPrune.prune(PL3.getLatLngs(), 10).length === PL3.getLatLngs().length - 1);
         done();
     });
 
     it('should not prune when not within distance', function(done) {
-        assert.isTrue(L.PolyUtil.prune(PL4, 10).getLatLngs().length === PL4.getLatLngs().length);
+        assert.isTrue(L.PolyPrune.prune(PL4, 10).getLatLngs().length === PL4.getLatLngs().length);
         done();
     });
 
