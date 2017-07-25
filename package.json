@@ -1,6 +1,6 @@
 {
   "name": "leaflet-polyutils",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Utilities for Leaflet Polylines",
   "keywords": [
     "Leaflet",
@@ -20,7 +20,7 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "leaflet": "^1.0.0",
+    "leaflet": "^1.1.0",
     "chai": "^3.5.0",
     "eslint": "^3.2.2",
     "eslint-config-airbnb-base": "^5.0.1",
