@@ -149,7 +149,7 @@
 
         L.DomEvent.on(L.DomUtil.get('prune'), 'click', function(event) {
             var pts = polyline.getLatLngs();
-            var pruned = L.PolyPrune.prune(pts, 5);
+            var pruned = L.PolyPrune.prune(pts, { tolerance: 7, useAlt: true });
             L.DomUtil.get('message').innerHTML = 'Pruned ' + (pts.length - pruned.length) +
                 ' points out of ' + pts.length;
             polyline.setLatLngs(pruned);

@@ -3,12 +3,16 @@
 # leaflet.polyutils
 A set of utilities for Leaflet polylines. Each can be used independently.
 
-## L.PolyPrune.prune(latlngs, tolerance)
+## L.PolyPrune.prune(latlngs, options)
 L.PolyPrune has a single static method to remove points from a polyline that do not deviate the line from more than a configurable number of meters.
+The `options` parameter is a javascript object with following optional value:
+* `tolerance`: (number, default: 5) max deviation distance in meter
+* `useAlt`: (boolean, default: true) use altitude data to compute 3D distances between points
 
 Example:
 ```javascript
-L.PolyPrune.prune(polyline.getLatLngs(), 5);
+L.PolyPrune.prune(polyline.getLatLngs(), { tolerance: 10, useAlt: false });
+L.PolyPrune.prune(polyline.getLatLngs());
 ```
 
 ## L.PolyTrim
