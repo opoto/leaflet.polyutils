@@ -5,7 +5,7 @@ A set of utilities for Leaflet polylines. Each can be used independently.
 
 ## L.PolyPrune.prune(latlngs, options)
 L.PolyPrune has a single static method to remove points from a polyline that do not deviate the line from more than a configurable number of meters.
-The `options` parameter is a javascript object with following optional value:
+The `options` parameter is a JavaScript object with following optional properties:
 * `tolerance`: (number, default: 5) max deviation distance in meter
 * `useAlt`: (boolean, default: true) use altitude data to compute 3D distances between points
 
@@ -24,7 +24,7 @@ A utility class to delete heading or trailing points from a polyline.
 ### PolyTrim Methods
 * `L.polyTrim (polyline, direction)`: Creates a new L.PolyTrim instance.
 * `trim(n)`: Trims the polyline, and returns the number of removed points (may be smaller than `n` is polyline size was smaller than `n`).
-* `getDirection()`: Returns the confirgured direction (`L.PolyTrim.FROM_START` or `L.PolyTrim.FROM_END`).
+* `getDirection()`: Returns the configured direction (`L.PolyTrim.FROM_START` or `L.PolyTrim.FROM_END`).
 * `getPolySize()`: Returns the polyline size before trimming.
 
 Example:
@@ -66,7 +66,7 @@ Several functions are supported, which use different types of parameters:
 
 
 #### Encoding:
-A speed profile is encoded as a json value with two fields:
+A speed profile is encoded as a JSON value with two fields:
 * `method` is the function method, as listed above
 * `parameters` is the parameters value as defined above
 
@@ -99,7 +99,7 @@ var sp2 = {
   * `pruning`: the percentage (number between 0 and 1) parameter for above described pruning
   * `polydeg`: the polynomial degree to use, if POLYNOMIAL method is used (recommended value is 2)
   * `threshold`: ignore speed from the GPS input traces which are below this value.
-* `computeSpeedProfileFromSpeeds(refspeeds, method, iterations, pruning, polydeg, threshold)`: Same as above method, but taking as input an array of [slope,speed] pairs instead of a geojson trace.
+* `computeSpeedProfileFromSpeeds(refspeeds, method, iterations, pruning, polydeg, threshold)`: Same as above method, but taking as input an array of [slope,speed] pairs instead of a GeoJson trace.
 
 Example:
 ```javascript
